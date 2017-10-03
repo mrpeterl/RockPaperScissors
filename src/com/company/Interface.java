@@ -52,30 +52,52 @@ public class Interface {
     public void createPlayer() {
         scanner = new Scanner(System.in);
         boolean duplicates = false;
-        System.out.println("Please enter a name : ");
-        String name = scanner.nextLine();
+        String name = null;
         do {
+            System.out.println("Please enter a name : ");
+            name = scanner.nextLine();
+            duplicates = false;
             for (int i = 0; i < players.size(); i++) {
-                if (name == players.get(i).getName()) {
+                if (name.equals(players.get(i).getName())) {
                     duplicates = true;
                 }
             }
-        }while(duplicates=false);
+        }while(duplicates==true);
+        players.add(new Player(name));
         welcome();
     }
 
-
-
-
-
-
-
     public static void playGame(){
+        //Game newGame = new Game();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter the name of player 1");
+        String playerOneName = scanner.nextLine();
+        System.out.println("Please enter the name of player 2");
+        String playerTwoName = scanner.nextLine();
+        Player playerOneHolder;
+        Player playerTwoHolder;
+        do {
+            playerOneHolder = getPlayerByName(playerOneName);
+            playerTwoHolder = getPlayerByName(playerTwoName);
+        }while(playerOneHolder == null || playerOneHolder == null);
 
     }
 
-    public static void showStats(){
+    public static Player getPlayerByName(String username){
+        for (int i = 0; i < players.size(); i++){
+            if (players.get(i).getName().equals(username)){
+                return players.get(i);
+            }
+        }
+        return null;
+    }
 
 
+    public void showStats(){
+
+            for(int i = 0; i < players.size();i++){
+                System.out.println(players.get(i).toString());
+            }
+        welcome();
     }
 }
