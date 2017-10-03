@@ -9,7 +9,7 @@ public class Game {
     MoveType playerTwoMove = null;
     Scanner scanner;
 
-    Game(Player playerOne, Player playerTwo){
+    Game(Player playerOne, Player playerTwo) {
         setPlayerOne(playerOne);
         setPlayerTwo(playerTwo);
         playGame();
@@ -18,40 +18,57 @@ public class Game {
     public Player getPlayerOne() {
         return playerOne;
     }
+
     public void setPlayerOne(Player playerOne) {
         this.playerOne = playerOne;
     }
+
     public Player getPlayerTwo() {
         return playerTwo;
     }
+
     public void setPlayerTwo(Player playerTwo) {
         this.playerTwo = playerTwo;
     }
+
     public MoveType getPlayerOneMove() {
         return playerOneMove;
     }
+
     public void setPlayerOneMove(MoveType playerOneMove) {
         this.playerOneMove = playerOneMove;
     }
+
     public MoveType getPlayerTwoMove() {
         return playerTwoMove;
     }
+
     public void setPlayerTwoMove(MoveType playerTwoMove) {
         this.playerTwoMove = playerTwoMove;
     }
 
-    void playGame(){
-        int intRoundResult = 0;
+    void playGame() {
+        int intRoundResult;
         do {
             setPlayerOneMove(requestPlayerMove(playerOne));
             setPlayerTwoMove(requestPlayerMove(playerTwo));
             System.out.println("Player 1 chose " + playerOneMove.toString() + "!");
             System.out.println("Player 2 chose " + playerTwoMove.toString() + "!");
             intRoundResult = roundComparisonLogic();
-            if (intRoundResult != 0) {
-                System.out.println("Player " + intRoundResult + " is the winner!");
-            } else {
-                System.out.println("Its a draw!");
+            switch (intRoundResult) {
+                case 0:
+                    System.out.println("Its a draw!");
+                    break;
+                case 1:
+                    System.out.println( playerOne.getName() + " is the winner!");
+                    playerOne.setCurrentWins(playerOne.getCurrentWins() + 1);
+                    playerTwo.setCurrentLosses(playerTwo.getCurrentLosses() + 1);
+                    break;
+                case 2:
+                    System.out.println(playerTwo.getName() + " is the winner!");
+                    playerTwo.setCurrentWins(playerOne.getCurrentWins() + 1);
+                    playerOne.setCurrentLosses(playerTwo.getCurrentLosses() + 1);
+                    break;
             }
         } while (intRoundResult == 0);
     }
@@ -89,9 +106,11 @@ public class Game {
         throw new IndexOutOfBoundsException();
     }
 
-    MoveType requestPlayerMove(Player currentPlayer){
+    MoveType requestPlayerMove(Player currentPlayer) {
         String stringPlayerMove;
-        System.out.flush();
+        for (int i = 0; i < 20; i++) {
+            System.out.println("");
+        }
         do {
             System.out.println(">" + currentPlayer.getName() + ", make your move!");
             scanner = new Scanner(System.in);
@@ -99,7 +118,7 @@ public class Game {
         } while (!stringPlayerMove.equals("rock")
                 && !stringPlayerMove.equals("paper")
                 && !stringPlayerMove.equals("scissors"));
-        switch (stringPlayerMove){
+        switch (stringPlayerMove) {
             case "rock":
                 return MoveType.rock;
             case "paper":

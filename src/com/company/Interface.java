@@ -8,22 +8,26 @@ public class Interface {
 
     public void welcome() {
 
-        createPlayerArray();
-        System.out.println("\nWelcome to Rock, Paper, Scissors!");
-        System.out.println("What do you wish to do?");
-        System.out.println("1 : Add Player");
-        System.out.println("2 : Play Game");
-        System.out.println("3 : Show Stats");
+        int selection;
+        do {
+            selection = 4;
+            scanner = new Scanner(System.in);
+            createPlayerArray();
+            System.out.println("\nWelcome to Rock, Paper, Scissors!");
+            System.out.println("What do you wish to do?");
+            System.out.println("1 : Add Player");
+            System.out.println("2 : Play Game");
+            System.out.println("3 : Show Stats");
 
-        int selection = 0;
-        try {
-            do {
-                selection = scanner.nextInt();
-            } while (selection > 3 || selection < 1);
-        } catch (InputMismatchException e) {
-            System.out.println("Please enter a number between 1 & 3");
-        }
-        menuSelection(selection);
+            try {
+                do {
+                    selection = scanner.nextInt();
+                } while (selection > 4 || selection < 0);
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter a number between 0 & 3");
+            }
+            menuSelection(selection);
+        } while (selection!=0);
     }
 
     public void menuSelection(int selection) {
@@ -36,6 +40,11 @@ public class Interface {
                 break;
             case 3:
                 showStats();
+                break;
+            case 0:
+                break;
+            default:
+                System.out.println("Input error, try again!");
                 break;
         }
 
@@ -64,23 +73,34 @@ public class Interface {
             }
         }while(duplicates==true);
         players.add(new Player(name));
-        welcome();
     }
 
     public static void playGame(){
-        //Game newGame = new Game();
+
         Scanner scanner = new Scanner(System.in);
+        Player playerOneHolder;
+        Player playerTwoHolder;
+        do {
         System.out.println("Please enter the name of player 1");
         String playerOneName = scanner.nextLine();
         System.out.println("Please enter the name of player 2");
         String playerTwoName = scanner.nextLine();
-        Player playerOneHolder;
-        Player playerTwoHolder;
-        do {
             playerOneHolder = getPlayerByName(playerOneName);
             playerTwoHolder = getPlayerByName(playerTwoName);
-        }while(playerOneHolder == null || playerOneHolder == null);
-
+            if (playerOneHolder == null || playerTwoHolder == null ){
+                System.out.println("One or more usernames can not be found!");
+                return;
+            }
+        } while(playerOneHolder == null || playerTwoHolder == null);
+        boolean flagEndGame = false;
+        do {
+            scanner = new Scanner(System.in);
+            new Game(playerOneHolder, playerTwoHolder);
+            System.out.println("Rematch? (Press Y)");
+            if (scanner.nextLine().toLowerCase().equals("Y")){
+                flagEndGame = true;
+            }
+        } while (!flagEndGame);
     }
 
     public static Player getPlayerByName(String username){
@@ -95,9 +115,15 @@ public class Interface {
 
     public void showStats(){
 
-            for(int i = 0; i < players.size();i++){
-                System.out.println(players.get(i).toString());
-            }
-        welcome();
+        String leftAlignFormat = "| %-15s | %-4d | %-4d |%n";
+
+        System.out.format("+-----------------+------+------+%n");
+        System.out.format("| USERNAME        | WINS | LOSS |%n");
+        System.out.format("+-----------------+-------------+%n");
+        for (int i = 0; i < players.size(); i++) {
+            System.out.format(leftAlignFormat, players.get(i).getName(), players.get(i).getCurrentWins(), players.get(i).getCurrentLosses());
+        }
+        System.out.format("+-----------------+-------------+%n");
+
     }
 }
