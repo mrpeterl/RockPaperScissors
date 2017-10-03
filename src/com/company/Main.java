@@ -6,10 +6,5 @@ public class Main {
 
         Interface gameInterface = new Interface();
         gameInterface.welcome();
-
-
     }
-
-
-
 }

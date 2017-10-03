@@ -1,9 +1,8 @@
 package com.company;
+
 import java.util.Scanner;
 
 public class Player {
-
-
 
     private int currentLosses;
     private int currentWins;
