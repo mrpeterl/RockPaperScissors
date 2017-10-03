@@ -41,10 +41,19 @@ public class Game {
     }
 
     void playGame(){
+        int intRoundResult = 0;
         do {
             setPlayerOneMove(requestPlayerMove(playerOne));
             setPlayerTwoMove(requestPlayerMove(playerTwo));
-        } while (roundComparisonLogic() == 0);
+            System.out.println("Player 1 chose " + playerOneMove.toString() + "!");
+            System.out.println("Player 2 chose " + playerTwoMove.toString() + "!");
+            intRoundResult = roundComparisonLogic();
+            if (intRoundResult != 0) {
+                System.out.println("Player " + intRoundResult + " is the winner!");
+            } else {
+                System.out.println("Its a draw!");
+            }
+        } while (intRoundResult == 0);
     }
 
     int roundComparisonLogic() {
@@ -52,7 +61,6 @@ public class Game {
             case rock:
                 switch (playerTwoMove) {
                     case rock:
-                        System.out
                         return 0;
                     case paper:
                         return 2;
@@ -85,10 +93,12 @@ public class Game {
         String stringPlayerMove;
         System.out.flush();
         do {
-            System.out.println(">" + Player.name + ", make your move!");
+            System.out.println(">" + currentPlayer.getName() + ", make your move!");
             scanner = new Scanner(System.in);
             stringPlayerMove = scanner.nextLine().toLowerCase();
-        } while (stringPlayerMove != "rock" || stringPlayerMove != "paper" || stringPlayerMove != "scissors");
+        } while (!stringPlayerMove.equals("rock")
+                && !stringPlayerMove.equals("paper")
+                && !stringPlayerMove.equals("scissors"));
         switch (stringPlayerMove){
             case "rock":
                 return MoveType.rock;
